@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Community Beitritt Anleitung</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Config for WhatsApp Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        waGreen: '#128C7E',
+                        waGreenDark: '#075E54',
+                        waLightGreen: '#25D366',
+                        waChatBg: '#efeae2',
+                        waGray: '#f0f2f5'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Custom Glowing/Pulsing indicator for steps */
+        .pulse-indicator {
+            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex items-center justify-center min-h-screen p-4 md:p-8">
+
+    <div class="max-w-5xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 flex flex-col md:flex-row">
+        
+        <!-- Left Side: Interactive Guidance & Stepper -->
+        <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-100">
+            <div>
+                <!-- Badge -->
+                <span class="inline-block bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider mb-4">
+                    Anleitung
+                </span>
+                
+                <!-- Title -->
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight mb-2">
+                    Einer WhatsApp Community beitreten
+                </h1>
+                <p class="text-sm text-slate-500 mb-6">
+                    Ziel: Der Gruppe <strong class="text-slate-700">„HPP Netzwerk - Prüfungsbooster“</strong> im HPP Netzwerk beitreten.
+                </p>
+
+                <!-- Step Description Card -->
+                <div id="step-desc-card" class="bg-slate-50 rounded-xl p-5 border border-slate-200 transition-all duration-300 min-h-[160px] flex flex-col justify-center">
+                    <h3 class="text-lg font-bold text-slate-800 mb-2 flex items-center">
+                        <!-- Corrected structure: step-num and step-title are separated siblings now -->
+                        <span id="step-num" class="bg-emerald-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 font-bold shrink-0">1</span>
+                        <span id="step-title" class="leading-tight">Lade Schritt...</span>
+                    </h3>
+                    <p id="step-text" class="text-slate-600 text-sm leading-relaxed">
+                        Lade Anleitungsinhalt...
+                    </p>
+                    
+                    <!-- Meta Notice / Tip for Step 5 -->
+                    <div id="step-tip" class="mt-4 p-3 bg-amber-50 text-amber-800 rounded-lg text-xs border border-amber-200 hidden">
+                        <strong>Hinweis:</strong> Nach dem Absenden musst du nichts weiter tun. Warte einfach, bis ein Administrator dich freischaltet!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stepper Indicators & Navigation -->
+            <div class="mt-8">
+                <!-- Progress bar -->
+                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-6">
+                    <div id="progress-bar" class="bg-emerald-500 h-1.5 rounded-full transition-all duration-300" style="width: 20%"></div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex items-center justify-between">
+                    <button id="btn-prev" onclick="prevStep()" class="px-4 py-2 text-sm font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition duration-200 disabled:opacity-30 disabled:pointer-events-none">
+                        &larr; Zurück
+                    </button>
+                    
+                    <!-- Direct Step Badges -->
+                    <div class="flex space-x-1">
+                        <span onclick="goToStep(1)" class="step-dot w-2.5 h-2.5 rounded-full bg-slate-300 cursor-pointer transition-colors duration-200"></span>
+                        <span onclick="goToStep(2)" class="step-dot w-2.5 h-2.5 rounded-full bg-slate-300 cursor-pointer transition-colors duration-200"></span>
+                        <span onclick="goToStep(3)" class="step-dot w-2.5 h-2.5 rounded-full bg-slate-300 cursor-pointer transition-colors duration-200"></span>
+                        <span onclick="goToStep(4)" class="step-dot w-2.5 h-2.5 rounded-full bg-slate-300 cursor-pointer transition-colors duration-200"></span>
+                        <span onclick="goToStep(5)" class="step-dot w-2.5 h-2.5 rounded-full bg-slate-300 cursor-pointer transition-colors duration-200"></span>
+                    </div>
+
+                    <button id="btn-next" onclick="nextStep()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition duration-200 shadow-md shadow-emerald-500/20">
+                        Weiter &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Beautiful Smartphone Simulator -->
+        <div class="w-full md:w-1/2 bg-slate-100 p-6 flex items-center justify-center">
+            
+            <!-- Smartphone Shell -->
+            <div class="w-[280px] h-[540px] bg-neutral-900 rounded-[40px] p-3 shadow-2xl border-4 border-neutral-800 relative flex flex-col justify-between overflow-hidden">
+                <!-- Notch/Speaker -->
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 h-4 w-32 bg-neutral-900 rounded-b-xl z-50 flex items-center justify-center">
+                    <div class="w-12 h-1 bg-neutral-800 rounded-full"></div>
+                </div>
+
+                <!-- Phone Internal Display Container -->
+                <div class="w-full h-full bg-white rounded-[32px] overflow-hidden relative flex flex-col justify-between text-xs select-none">
+                    
+                    <!-- Step-Specific Smartphone Screen Content -->
+                    <div id="phone-screen" class="w-full h-full flex flex-col justify-between transition-all duration-300">
+                        <!-- Screen Header -->
+                        <div class="bg-waGreenDark text-white pt-5 pb-2 px-3 flex flex-col justify-end shadow-md z-10 shrink-0">
+                            <!-- System Bar Status Mock -->
+                            <div class="flex justify-between text-[10px] opacity-70 mb-2">
+                                <span>09:41</span>
+                                <div class="flex items-center space-x-1">
+                                    <span>📶</span>
+                                    <span>🔋</span>
+                                </div>
+                            </div>
+                            
+                            <!-- WhatsApp Dynamic Header -->
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-sm" id="phone-header-title">WhatsApp</span>
+                                <div class="flex space-x-2 text-sm opacity-90">
+                                    <span>🔍</span>
+                                    <span>⋮</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Screen Content Area (Scrollable simulation) -->
+                        <div id="phone-content" class="flex-grow bg-waChatBg p-3 overflow-y-auto flex flex-col space-y-2 relative">
+                            <!-- Dynamic UI injected by JavaScript depending on current step -->
+                        </div>
+
+                        <!-- Navigation Bar Bottom (Mock) -->
+                        <div class="bg-white border-t border-slate-200 py-1.5 px-3 flex justify-around items-center text-[10px] text-slate-500 shrink-0 z-10" id="phone-bottom-nav">
+                            <!-- Custom Bottom Tabs for Whatsapp style -->
+                            <div class="flex flex-col items-center cursor-pointer" id="nav-tab-chats">
+                                <span class="text-base">💬</span>
+                                <span>Chats</span>
+                            </div>
+                            <div class="flex flex-col items-center cursor-pointer relative" id="nav-tab-communities">
+                                <div id="indicator-community" class="absolute -top-1 right-2 w-3 h-3 bg-red-500 rounded-full border border-white hidden"></div>
+                                <span class="text-base" id="icon-community">👥</span>
+                                <span class="font-semibold" id="text-community">Community</span>
+                            </div>
+                            <div class="flex flex-col items-center cursor-pointer">
+                                <span class="text-base">📞</span>
+                                <span>Anrufe</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Custom Success Modal (No alert used) -->
+    <div id="success-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-300" id="success-modal-content">
+            <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">🎉</div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Großartig!</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                Du hast alle Schritte verstanden. Folge dieser Anleitung jetzt einfach in deinem echten WhatsApp!
+            </p>
+            <button onclick="closeSuccessModal()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl transition duration-200 shadow-lg shadow-emerald-500/20">
+                Anleitung schließen
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Setup State
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        // Content Database
+        const stepsData = {
+            1: {
+                title: "Community-Ansicht öffnen",
+                desc: "Öffne WhatsApp auf deinem Mobiltelefon. Tippe unten (beim iPhone) oder oben (bei Android) auf das <strong>Community-Symbol</strong> (die drei Köpfe). Hier findest du all deine Communities.",
+                header: "WhatsApp",
+                setup: function() {
+                    // Simulates basic Chat Overview
+                    const content = document.getElementById('phone-content');
+                    content.innerHTML = `
+                        <div class="bg-white rounded-lg p-3 shadow-sm flex items-center space-x-3 opacity-60">
+                            <div class="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center text-sm">🏡</div>
+                            <div class="flex-1">
+                                <div class="font-bold text-slate-800">Familien-Gruppe</div>
+                                <div class="text-slate-500 text-[10px]">Mama: Bringst du Brot mit?</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 shadow-sm flex items-center space-x-3 opacity-60">
+                            <div class="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center text-sm">⚽</div>
+                            <div class="flex-1">
+                                <div class="font-bold text-slate-800">Sportverein</div>
+                                <div class="text-slate-500 text-[10px]">Trainer: Training faellt aus!</div>
+                            </div>
+                        </div>
+                    `;
+                    // Highlight the Community Tab at the bottom
+                    highlightBottomTab('communities');
+                }
+            },
+            2: {
+                title: "HPP Netzwerk suchen",
+                desc: "Suche in der Community-Liste nach dem Eintrag <strong class='text-slate-800'>„HPP Netzwerk“</strong>. Klicke dort auf den Button <strong class='text-emerald-600'>„Alle anzeigen“</strong>, um sämtliche verfügbaren Untergruppen der Community zu sehen.",
+                header: "Communities",
+                setup: function() {
+                    const content = document.getElementById('phone-content');
+                    content.innerHTML = `
+                        <!-- Community Item -->
+                        <div class="bg-white rounded-lg p-3 shadow-sm border border-slate-100 flex flex-col space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-xs">HPP Netzwerk</h4>
+                                    <p class="text-slate-500 text-[9px]">Community · Aktiv</p>
+                                </div>
+                                
+                                <!-- Trigger Button next to the name without icon -->
+                                <button class="py-1 px-2 bg-emerald-50 border border-emerald-500 hover:bg-emerald-100 text-emerald-700 rounded-lg text-[10px] font-semibold flex items-center justify-center pulse-indicator transition duration-200">
+                                    Alle anzeigen
+                                </button>
+                            </div>
+                            
+                            <div class="text-[10px] text-slate-600 bg-slate-50 p-2 rounded">
+                                Ankündigung: Willkommen im HPP Netzwerk! Hier lernen wir gemeinsam...
+                            </div>
+                        </div>
+                    `;
+                    resetBottomTabs();
+                }
+            },
+            3: {
+                title: "Gruppe auswählen",
+                desc: "Scrolle nach unten zum Bereich <strong class='text-slate-800'>„Gruppen, denen du beitreten kannst“</strong>. Wähle dort die Gruppe <strong class='text-slate-800'>„HPP Netzwerk - Prüfungsbooster“</strong> aus, um dich anzumelden.",
+                header: "HPP Netzwerk",
+                setup: function() {
+                    const content = document.getElementById('phone-content');
+                    content.innerHTML = `
+                        <div class="text-[10px] uppercase font-bold text-slate-500 mb-1">Bereits beigetreten</div>
+                        <div class="bg-white rounded-lg p-2.5 shadow-sm opacity-50 flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-base">📢</span>
+                                <span class="font-semibold text-slate-800">Ankündigungen</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400">Beigetreten</span>
+                        </div>
+                        
+                        <div class="text-[10px] uppercase font-bold text-slate-500 mb-1">Gruppen, denen du beitreten kannst</div>
+                        
+                        <!-- Main group: Prüfungsbooster (Highlighted) -->
+                        <div class="bg-white rounded-lg p-3 shadow-sm border-2 border-emerald-500 relative cursor-pointer pulse-indicator flex flex-col space-y-1 mb-2">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-lg">🚀</span>
+                                    <div>
+                                        <div class="font-bold text-slate-900 text-xs">HPP Netzwerk - Prüfungsbooster</div>
+                                        <div class="text-slate-400 text-[9px]">Aktiv lernen & simulieren</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-emerald-500 font-bold">&rarr;</span>
+                            </div>
+                        </div>
+
+                        <!-- Secondary group: Prüfungswissen -->
+                        <div class="bg-white rounded-lg p-2.5 shadow-sm flex items-center justify-between mb-2 opacity-75">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg">📚</span>
+                                <div>
+                                    <div class="font-bold text-slate-900 text-xs">HPP Netzwerk - Prüfungswissen</div>
+                                    <div class="text-slate-400 text-[9px]">Thematische Vertiefung & Wissen</div>
+                                </div>
+                            </div>
+                            <span class="text-xs text-slate-400">&rarr;</span>
+                        </div>
+
+                        <!-- Third group: Praxis -->
+                        <div class="bg-white rounded-lg p-2.5 shadow-sm flex items-center justify-between opacity-75">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg">💼</span>
+                                <div>
+                                    <div class="font-bold text-slate-900 text-xs">HPP Network - Praxis</div>
+                                    <div class="text-slate-400 text-[9px]">Austausch, Fälle & Berufseinstieg</div>
+                                </div>
+                            </div>
+                            <span class="text-xs text-slate-400">&rarr;</span>
+                        </div>
+                    `;
+                    resetBottomTabs();
+                }
+            },
+            4: {
+                title: "Beitrittsanfrage senden",
+                desc: "Nachdem du die Gruppe ausgewählt hast, klicke unten auf den großen grünen Button <strong class='text-slate-800'>„Beitrittsanfrage stellen“</strong>. Dadurch werden die Gruppen-Administratoren informiert.",
+                header: "Gruppe beitreten",
+                setup: function() {
+                    const content = document.getElementById('phone-content');
+                    content.innerHTML = `
+                        <div class="bg-white rounded-xl p-4 shadow-md flex flex-col items-center justify-center space-y-4 text-center mt-6">
+                            <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center text-3xl">🚀</div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-sm">HPP Netzwerk - Prüfungsbooster</h3>
+                                <p class="text-slate-500 text-[10px] mt-1">Diese Gruppe erfordert die Freigabe eines Administrators.</p>
+                            </div>
+                            <button class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-bold text-xs pulse-indicator shadow-md">
+                                Beitrittsanfrage stellen
+                            </button>
+                        </div>
+                    `;
+                    resetBottomTabs();
+                }
+            },
+            5: {
+                title: "Warten auf Bestätigung",
+                desc: "Deine Anfrage ist jetzt auf dem Weg! Die Administratoren der Gruppe prüfen deine Anfrage in Kürze und schalten dich dann für die Gruppe frei.",
+                header: "Anfrage gesendet",
+                setup: function() {
+                    const content = document.getElementById('phone-content');
+                    content.innerHTML = `
+                        <div class="bg-white rounded-xl p-5 shadow-md flex flex-col items-center justify-center space-y-4 text-center mt-6">
+                            <div class="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center text-3xl">⏳</div>
+                            <div>
+                                <h3 class="font-bold text-amber-800 text-sm">Anfrage gesendet!</h3>
+                                <p class="text-slate-500 text-[10px] mt-2">Bitte gedulde dich einen Moment. Admins schalten dich in Kürze frei.</p>
+                            </div>
+                            <div class="w-full bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-2.5 text-[10px] text-left">
+                                💡 Sobald du freigeschaltet bist, taucht die Gruppe automatisch in deinen Chats auf!
+                            </div>
+                        </div>
+                    `;
+                    resetBottomTabs();
+                }
+            }
+        };
+
+        // DOM Update Logic
+        function updateUI() {
+            const data = stepsData[currentStep];
+            
+            // Textual Update on Left Card (Ensuring elements are separate and not overwritten)
+            document.getElementById('step-num').textContent = currentStep;
+            document.getElementById('step-title').innerHTML = data.title;
+            document.getElementById('step-text').innerHTML = data.desc;
+            
+            // Toggle Info tip on step 5
+            const tip = document.getElementById('step-tip');
+            if (currentStep === 5) {
+                tip.classList.remove('hidden');
+            } else {
+                tip.classList.add('hidden');
+            }
+
+            // Phone Header Title Update
+            document.getElementById('phone-header-title').textContent = data.header;
+
+            // Trigger Phone UI specific layout
+            data.setup();
+
+            // Progress Bar Width
+            const progressPct = (currentStep / totalSteps) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPct}%`;
+
+            // Active/Inactive button styles
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+
+            btnPrev.disabled = currentStep === 1;
+            
+            if (currentStep === totalSteps) {
+                btnNext.innerHTML = 'Fertig 🎉';
+                btnNext.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+                btnNext.classList.add('bg-blue-600', 'hover:bg-blue-700');
+            } else {
+                btnNext.innerHTML = 'Weiter &rarr;';
+                btnNext.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                btnNext.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+            }
+
+            // Dot navigation highlights
+            const dots = document.querySelectorAll('.step-dot');
+            dots.forEach((dot, index) => {
+                if (index + 1 === currentStep) {
+                    dot.classList.remove('bg-slate-300');
+                    dot.classList.add('bg-emerald-500', 'w-4'); // Expand active dot visually
+                } else {
+                    dot.classList.remove('bg-emerald-500', 'w-4');
+                    dot.classList.add('bg-slate-300');
+                }
+            });
+        }
+
+        // WhatsApp Phone Nav highlights
+        function highlightBottomTab(tabId) {
+            resetBottomTabs();
+            if (tabId === 'communities') {
+                const comTab = document.getElementById('nav-tab-communities');
+                comTab.classList.add('text-emerald-500');
+                document.getElementById('icon-community').innerHTML = '👥';
+                document.getElementById('indicator-community').classList.remove('hidden');
+                document.getElementById('indicator-community').classList.add('pulse-indicator');
+            }
+        }
+
+        function resetBottomTabs() {
+            const chats = document.getElementById('nav-tab-chats');
+            const communities = document.getElementById('nav-tab-communities');
+            
+            chats.classList.remove('text-emerald-500');
+            communities.classList.remove('text-emerald-500');
+            document.getElementById('indicator-community').classList.add('hidden');
+            document.getElementById('indicator-community').classList.remove('pulse-indicator');
+        }
+
+        // Action Navigation Functions
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateUI();
+            } else {
+                showSuccessModal();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+            }
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            updateUI();
+        }
+
+        // Custom Modal Actions
+        function showSuccessModal() {
+            const modal = document.getElementById('success-modal');
+            const content = document.getElementById('success-modal-content');
+            modal.classList.remove('hidden');
+            // Force browser reflow to enable transition
+            modal.offsetHeight;
+            modal.classList.remove('opacity-0');
+            content.classList.remove('scale-95');
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('success-modal');
+            const content = document.getElementById('success-modal-content');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Initialize App on load
+        window.onload = function() {
+            updateUI();
+        }
+    </script>
+</body>
+</html>
